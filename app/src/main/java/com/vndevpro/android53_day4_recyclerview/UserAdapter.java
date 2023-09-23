@@ -43,6 +43,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         Glide.with(mContext).load(user.getAvatar()).into(holder.imgAvatar);
     }
 
+    public void deleteItem(int pos) {
+        mListUsers.remove(pos);
+        notifyItemRemoved(pos);
+    }
+
     @Override
     public int getItemCount() {
         return mListUsers != null ? mListUsers.size() : 0;
