@@ -3,13 +3,13 @@ package com.vndevpro.android53_day4_recyclerview;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IItemSwipeListener {
 
     private ArrayList<User> mListUsers;
     private UserAdapter mUserAdapter;
@@ -31,8 +31,13 @@ public class MainActivity extends AppCompatActivity {
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,true);
 //        rvDemo.setLayoutManager(linearLayoutManager);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        rvDemo.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvDemo.setLayoutManager(linearLayoutManager);
+        SwipeItemCallBack swipeItemCallBack = new SwipeItemCallBack(this, mUserAdapter);
+        swipeItemCallBack.setItemSwipeListener(this);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeItemCallBack);
+
+        itemTouchHelper.attachToRecyclerView(rvDemo);
         rvDemo.setAdapter(mUserAdapter);
 
     }
@@ -50,5 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
             mListUsers.add(user);
         }
+    }
+
+    @Override
+    public void onItemSwiped(int pos) {
+        mUserAdapter.deleteItem(pos);
     }
 }
